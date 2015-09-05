@@ -103,5 +103,101 @@ namespace CrackingCodingInterview
             return String.Join("",sarray);
         }
 
+        public static String CompressString(String s)
+        {
+            if (String.IsNullOrWhiteSpace(s))
+                throw new Exception("null string");
+            int newlength = CountChar(s);
+            int length = s.Length;
+            if (newlength >= length)
+                return s;
+            char lastChar = s[0];
+            int count = 1;
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1; i < length; i++)
+            {
+                if (s[i] == lastChar)
+                    count++;
+                else
+                {
+                    sb.Append(s[i]);
+                    sb.Append(count);
+                    count = 1;
+                    lastChar = s[i];
+                }
+            }
+            sb.Append(lastChar);
+            sb.Append(count);
+            return sb.ToString();
+
+        }
+
+        public static int CountChar(String s)
+        {
+            char lastChar = s[0];
+            int newlength =0;
+            int count = 1;
+            for (int i = 1; i < s.Length; i++)
+            {
+                if (s[i] == lastChar)
+                    count++;
+                else
+                {
+                    newlength += 1 + count.ToString().Length;
+                    count = 1;
+                    lastChar = s[i];
+                }
+            }
+            newlength += 1 + count.ToString().Length;
+            return newlength;
+        }
+
+        public static int[,] NullRowsColumns(int[,] matrix)
+        {
+            bool[] row = new bool[matrix.GetLength(0)];
+            bool[] col = new bool[matrix.GetLength(1)];
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    if (matrix[i,j] == 0)
+                    {
+                        row[i] = true;
+                        col[j] = true;
+                    }
+                    Console.Write("\t" + matrix[i,j]);
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("After Processing");
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+
+                    for (int j = 0; j < matrix.GetLength(1); j++)
+                    {
+                        if(row[i] || col[j])
+                            matrix[i,j] =0;
+                        Console.Write("\t" + matrix[i,j]);
+                    }
+                    Console.WriteLine();
+            }
+
+            return matrix;
+        }
+        public static bool IsRotation (String s1 ,String s2)
+        {
+            if(String.IsNullOrWhiteSpace(s1) || String.IsNullOrWhiteSpace(s2))
+                throw new Exception("Null string");
+            int length1 = s1.Length;
+            int length2 = s2.Length;
+            if (length1 != length2)
+                return false;
+            string s3 = s1 + s1;
+            if (s3.Contains(s2))
+                return true;
+            else
+                return false;
+        }
+
     }
 }
